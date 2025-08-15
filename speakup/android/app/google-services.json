@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "109085224903",
+    "project_id": "speakaditya",
+    "storage_bucket": "speakaditya.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:109085224903:android:cd97db35ce67b9db31f3e2",
+        "android_client_info": {
+          "package_name": "com.example.speakup"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBS_mQdUTWqmTr1TvRGNYvOODLgmQKR9Rw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

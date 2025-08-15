@@ -15,7 +15,7 @@ dependencies:
   geodesy: ^0.10.2
   google_fonts: ^6.2.1
   font_awesome_flutter: ^10.7.0
-  firebase_core: ^3.1.1 # Must have for any Firebase project
+  firebase_core: ^3.15.2 # Must have for any Firebase project
   firebase_auth: ^5.1.1 # For user authentication
   cloud_firestore: ^5.0.2 # For the database
   flutter_compass: ^0.8.0

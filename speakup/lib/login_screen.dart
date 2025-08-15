@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // ADDED: Import for Firebase Auth
 import 'dashboard_screen.dart'; // Import your dashboard screen
 
 class LoginScreen extends StatefulWidget {
@@ -17,17 +16,44 @@ class _LoginScreenState extends State<LoginScreen> {
   final _ageController = TextEditingController();
   final _codeController = TextEditingController();
 
-  
-
   @override
   void dispose() {
     _emailController.dispose();
     _nameController.dispose();
+    _ageController.dispose();
+    _codeController.dispose();
     super.dispose();
   }
 
-  // ADDED: New function to handle the entire login process
+  // Updated function to handle login with form validation
   Future<void> _login() async {
+    // Validate input fields
+    if (_emailController.text.trim().isEmpty ||
+        _nameController.text.trim().isEmpty ||
+        _ageController.text.trim().isEmpty ||
+        _codeController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please fill in all fields")),
+      );
+      return;
+    }
+
+    // Validate email format
+    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(_emailController.text.trim())) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter a valid email address")),
+      );
+      return;
+    }
+
+    // Validate age is a number
+    if (int.tryParse(_ageController.text.trim()) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Please enter a valid age")),
+      );
+      return;
+    }
+
     // Show a loading circle
     showDialog(
       context: context,
@@ -36,28 +62,25 @@ class _LoginScreenState extends State<LoginScreen> {
     );
 
     try {
-      // Try to sign in the user with Firebase
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-
-      // If sign-in is successful, pop the loading circle
+      // Simulate a login process (replace with your actual login logic)
+      await Future.delayed(const Duration(seconds: 2));
+      
+      // For now, we'll just validate that all fields are filled
+      // Replace this with your actual authentication logic
+      
+      // If login is successful, pop the loading circle
       if (mounted) Navigator.of(context).pop();
 
       // Navigate to the dashboard and clear all previous screens
-      Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => const DashboardScreen()),
-        (route) => false,
-      );
+      
 
-    } on FirebaseAuthException catch (e) {
+    } catch (e) {
       // If there's an error, pop the loading circle
       if (mounted) Navigator.of(context).pop();
 
       // Show an error message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message ?? "Failed to log in")),
+        SnackBar(content: Text("Failed to log in: ${e.toString()}")),
       );
     }
   }
@@ -78,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               Text(
                 'SPEAK UP',
-                style: GoogleFonts.dancingScript(
+                style: GoogleFonts.roboto(
                   fontSize: 60,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFF0096FF),
@@ -125,54 +148,54 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 16),
 
-              // Password Text Field
+              // Name Text Field
               TextField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'NAME',
+                  labelText: 'Name',
                   hintText: 'Enter your name',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
-      
                 ),
-                
-                    
               ),
+
               const SizedBox(height: 16),
+
+              // Age Text Field
               TextField(
-              controller: _ageController,
+                controller: _ageController,
+                keyboardType: TextInputType.number,
                 decoration: InputDecoration(
-                  labelText: 'AGE',
-                  hintText: 'Enter your AGE',
+                  labelText: 'Age',
+                  hintText: 'Enter your age',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
-      
                 ),
               ),
+
               const SizedBox(height: 16),
 
-
+              // Code Text Field
               TextField(
-              controller: _codeController,
+                controller: _codeController,
                 decoration: InputDecoration(
-                  labelText: 'CODE',
-                  hintText: 'Enter your CODE',
+                  labelText: 'Code',
+                  hintText: 'Enter your code',
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
-      
                 ),
-              ),                
+              ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
 
               // Continue Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: _login, // MODIFIED: Call the new _login function
+                  onPressed: _login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF0096FF),
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -187,9 +210,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
 
-              
-
-              
               const SizedBox(height: 24),
               
               Padding(
@@ -199,11 +219,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   textAlign: TextAlign.center,
                   style: TextStyle(color: Colors.grey[600], fontSize: 12),
                 ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
-      );
-    }
+      ),
+    );
   }
+}
